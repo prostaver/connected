@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
 from config.database import Base
+from models.user import User
 
 class Employer(Base):
     __tablename__ = "employer_details"
@@ -13,7 +14,7 @@ class Employer(Base):
     company_logo = Column(String(255), nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"))
 
-    user = relationship("User")
+    user = relationship(User)
 
     def __repr__(self):
         return (f"<Employer id = {self.id}, company_name = {self.company_name}, company_description = {self.company_description}, " +
