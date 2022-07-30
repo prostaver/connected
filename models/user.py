@@ -13,7 +13,7 @@ class User(Base):
     middle_name = Column(String(255), nullable=True)
     last_name = Column(String(255), nullable=False)
     address = Column(Text, nullable=False)
-    email = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, unique=True)
     contact_no = Column(String(255), nullable=True)
     password = Column(Text, nullable=False)
     user_type_id = Column(Integer, ForeignKey("user_types.id"))

@@ -1,13 +1,31 @@
+import configparser
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-engine = create_engine("postgresql://billy:endoftheworld@192.168.0.115:5432/classified", echo=True)
+config = configparser.ConfigParser()
+
+config.read(os.path.dirname(os.path.abspath(__file__))+"/config.ini")
+# f = open(os.path.dirname(os.path.abspath(__file__))+"/config.ini", "r")
+# print(f.read())
+config.sections()
+
+dbConfig = config['DATABASE']
+dbEngine = dbConfig["ENGINE"]
+dbUser = dbConfig["USER"]
+dbPW = dbConfig["PASSWORD"]
+dbHost = dbConfig["HOST"]
+dbPort = dbConfig["PORT"]
+dbName = dbConfig["DBNAME"]
+
+engine = create_engine(f"{dbEngine}://{dbUser}:{dbPW}@{dbHost}:{dbPort}/{dbName}", echo=True)
 
 Base = declarative_base()
 
 DbSession = sessionmaker(bind=engine)
 
-def getDbConection():
+def get_db_connection():
     db = DbSession()
     try:
         yield db

@@ -1,1 +1,1 @@
-__all__ = ["genders", "user_types", "users", "employer_details", "job_positions", "applicant_details", "employment_logs", "applicant_qualifications"]
+__all__ = ["gender", "user_type", "user", "employer", "job_position", "applicant", "employment_log", "qualification"]

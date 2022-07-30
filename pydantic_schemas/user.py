@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from pydantic_schemas.gender import Gender
 from pydantic_schemas.user_type import UserType
@@ -13,12 +14,12 @@ class BaseUser(BaseModel):
     gender_id: int
 
 class CreateUser(BaseUser):
-    password: str
+    password: Optional[str]
 
-class User(BaseModel):
+class User(BaseUser):
     id: int
 
-    user_type_id: UserType
+    user_type: UserType
     gender: Gender
 
     class Config:
