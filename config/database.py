@@ -7,8 +7,6 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 config = configparser.ConfigParser()
 
 config.read(os.path.dirname(os.path.abspath(__file__))+"/config.ini")
-# f = open(os.path.dirname(os.path.abspath(__file__))+"/config.ini", "r")
-# print(f.read())
 config.sections()
 
 dbConfig = config['DATABASE']
