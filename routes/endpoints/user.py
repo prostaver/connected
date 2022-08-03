@@ -37,3 +37,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session=Depe
     payload = user_service.decode_token(token)
     user = user_service.get_user_by_email(db=db, email=payload.get("user_email"))
     return user
+
+@router.delete("/{user_id}", status_code=status.HTTP_200_OK)
+async def delete_user(user_id: int, db: Session=Depends(get_db_connection)):
+    return user_service.delete_user(db, user_id)
