@@ -41,4 +41,7 @@ class CreateUser(BaseUser):
     password: Optional[str]
 
     from pydantic_schemas.employer import CreateEmployer
+    # from pydantic_schemas.applicant import CreateApplicant
+
     employer: Optional[CreateEmployer]
+    # applicant: Optional[CreateApplicant]
