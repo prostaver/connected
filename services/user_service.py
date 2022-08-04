@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from .hash_func import hash_password, verify_password
 from models import user as model_user
 from pydantic_schemas import user as user_schema, user_type as user_type_schema
-from services import employer_service
+from services import employer_service, applicant_service
 
 """
     Retrieves the user data
@@ -63,7 +63,7 @@ def create_or_update_user(db: Session, user_input:user_schema.CreateUser, user_i
     if user_type_schema.UserTypes(user_data.user_type_id) == user_type_schema.UserTypes.Employer:
         employer_service.create_or_update_employer(db=db, employer_input_data=employer_input_data, user_id=user_data.id)
     elif user_type_schema.UserTypes(user_data.user_type_id) == user_type_schema.UserTypes.Applicant:
-        pass
+        applicant_service.create_applicant(db, user_data.id)
 
     return user_data
 
@@ -79,6 +79,10 @@ def delete_user(db: Session, user_id: int):
         employer = employer_service.get_employer_by_user_id(db, user_id, True)
         if employer:
             employer_service.delete_employer(db, employer.id)
+    if user_type_schema.UserTypes(user.user_type_id) == user_type_schema.UserTypes.Applicant:
+        applicant = applicant_service.get_applicant_by_user_id(db, user_id)
+        if applicant:
+            applicant_service.delete_applicant(db, applicant.id)
 
     db.query(model_user.User).filter(model_user.User.id == user_id).delete()
     db.commit()
