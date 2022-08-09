@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 
 from config.database import Base
 from models.applicant import Applicant
-from models.employer import Employer
+from models.job_position import JobPosition
 
 class EmploymentLog(Base):
     __tablename__ = "employment_logs"
@@ -14,11 +14,11 @@ class EmploymentLog(Base):
     tenure = Column(String(255), nullable=False)
     is_current = Column(Boolean, default=True)
     applicant_id = Column(Integer, ForeignKey("applicant_details.id"))
-    employer_id = Column(Integer, ForeignKey("employer_details.id"), nullable=True)
+    job_position_id = Column(Integer, ForeignKey("job_positions.id"), nullable=True)
 
     applicant = relationship(Applicant)
-    employer = relationship(Employer)
+    job_position = relationship(JobPosition)
 
     def __repr__(self):
         return (f"<EmploymentLog id = {self.id}, company_name = {self.company_name}, position = {self.position}, tenure = {self.tenure}, " +
-                f"is_current = {self.is_current}, applicant_id = {self.applicant_id}, employer_id = {self.employer_id}>")
+                f"is_current = {self.is_current}, applicant_id = {self.applicant_id}, employer_id = {self.job_position_id}>")
