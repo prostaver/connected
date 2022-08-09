@@ -22,16 +22,19 @@ app.add_middleware(
 
 app.include_router(router)
 
-# for gunicorn server
-# run in console
-# gunicorn main:app --workers 4 -- worker-class uvicorn.workers.UvicornWorker --bind 127.0.0.1:8000
-# where main = module name, app = fastapi() name, workers = (no. of cpu cores * 2) + 1, and bind = ipaddress:port
-if __name__ == '__main__':
+def main():
     config = configparser.ConfigParser()
 
     config.read(os.path.dirname(os.path.abspath(__file__))+"/config/config.ini")
     config.sections()
 
+    # for gunicorn server
+    # run in console
+    # gunicorn main:app --workers 4 -- worker-class uvicorn.workers.UvicornWorker --bind 127.0.0.1:8000
+    # where main = module name, app = fastapi() name, workers = (no. of cpu cores * 2) + 1, and bind = ipaddress:port
     if config['DEFAULT']['ENVIRONMENT'] == "development":
         uvicorn.run("main:app", host="0.0.0.0", port=8080, log_level="debug", reload=True)
     print("running")
+
+if __name__ == '__main__':
+    main()
