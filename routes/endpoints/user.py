@@ -32,7 +32,7 @@ async def update_user(user_id: int, user_schema:user_schema.CreateUser, db: Sess
     updated_user = user_service.create_or_update_user(db=db, user_id=user_id, user_input=user_schema)
     return updated_user
 
-@router.get("/current/", status_code=status.HTTP_200_OK)
+@router.get("/current/", response_model=user_schema.User, status_code=status.HTTP_200_OK)
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session=Depends(get_db_connection)):
     payload = login_service.decode_token(token)
     user = user_service.get_user_by_email(db=db, email=payload.get("user_email"))
