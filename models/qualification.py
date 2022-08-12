@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, Text, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, Text, ForeignKey, Date, String
 from sqlalchemy.orm import relationship
 
 from config.database import Base
@@ -11,7 +11,7 @@ class Qualification(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     details = Column(Text, nullable=False)
-    acquirement_date = Column(DateTime, default=datetime.now)
+    acquirement_date = Column(Date, default=datetime.now)
     applicant_id = Column(Integer, ForeignKey("applicant_details.id"))
 
     applicant = relationship(Applicant)
