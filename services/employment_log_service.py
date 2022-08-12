@@ -8,7 +8,7 @@ def create_or_update_employment_log(db: Session, employment_log_input: employmen
     """Create or update an employment log."""
     employment_log_data = None
     if employment_log_id:
-        employment_log_data = db.query(model_employment_log.EmploymentLog).filter(model_employment_log.EmploymentLog.id == employment_log_id)
+        employment_log_data = db.query(model_employment_log.EmploymentLog).filter(model_employment_log.EmploymentLog.id == employment_log_id).first()
         if not employment_log_data:
             raise HTTPException(status.HTTP_404_NOT_FOUND, f"Could not update. No employment log found with id: {employment_log_id}")
         employment_log_data.company_name = employment_log_input.company_name
@@ -17,15 +17,15 @@ def create_or_update_employment_log(db: Session, employment_log_input: employmen
         employment_log_data.is_current = employment_log_input.is_current
         employment_log_data.applicant_id = employment_log_input.applicant_id
         employment_log_data.job_position_id = employment_log_input.job_position_id
-
-    employment_log_data = model_employment_log.EmploymentLog(
-        company_name = employment_log_input.company_name,
-        position = employment_log_input.position,
-        tenure = employment_log_input.tenure,
-        is_current = employment_log_input.is_current,
-        applicant_id = employment_log_input.applicant_id,
-        job_position_id = employment_log_input.job_position_id
-    )
+    else:
+        employment_log_data = model_employment_log.EmploymentLog(
+            company_name = employment_log_input.company_name,
+            position = employment_log_input.position,
+            tenure = employment_log_input.tenure,
+            is_current = employment_log_input.is_current,
+            applicant_id = employment_log_input.applicant_id,
+            job_position_id = employment_log_input.job_position_id
+        )
 
     db.add(employment_log_data)
     db.commit()
