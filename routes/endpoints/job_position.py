@@ -31,12 +31,10 @@ async def get_job_position(job_position_id: int, db: Session = Depends(get_db_co
     return job_position
 
 @router.post("/", response_model=job_position_schema.JobPosition, status_code=status.HTTP_201_CREATED)
-async def create_job_position(job_position_input: job_position_schema.CreateJobPosition, db: Session = Depends(get_db_connection), user: user_schema.User = Depends(get_current_user)):
-    employer = employer_service.get_employer_by_user_id(db, user.id)
-    job_position = job_position_service.create_job_position(db, job_position_input, employer.id)
+async def create_job_position(job_position_input: job_position_schema.CreateJobPosition, employer_id: int, db: Session = Depends(get_db_connection)):
+    job_position = job_position_service.create_job_position(db, job_position_input, employer_id)
     return job_position
 
 @router.delete("/{job_position_id}", status_code=status.HTTP_200_OK)
-async def delete_job_position(job_position_id: int, db: Session = Depends(get_db_connection), user: user_schema.User = Depends(get_current_user)):
-    employer = employer_service.get_employer_by_user_id(db, user.id)
-    return job_position_service.delete_job_position(db, job_position_id, employer.id)
+async def delete_job_position(job_position_id: int, employer_id: int, db: Session = Depends(get_db_connection)):
+    return job_position_service.delete_job_position(db, job_position_id, employer_id)
