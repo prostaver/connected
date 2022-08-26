@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from models.user_type import UserType
 
+
 def get_user_types(db: Session, user_type_id: int = None):
     if user_type_id:
         user_type = db.query(UserType).filter(UserType.id == user_type_id).first()

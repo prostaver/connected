@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Integer
 
 from config.database import Base
 
+
 class UserType(Base):
     __tablename__ = "user_types"
 

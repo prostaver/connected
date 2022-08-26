@@ -3,8 +3,9 @@ import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from routes.api import router
+from routes import router
 
 import uvicorn
 
@@ -21,6 +22,8 @@ app.add_middleware(
 )
 
 app.include_router(router)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 def main():
     config = configparser.ConfigParser()
@@ -35,6 +38,7 @@ def main():
     if config['DEFAULT']['ENVIRONMENT'] == "development":
         uvicorn.run("main:app", host="127.0.0.1", port=8000, log_level="debug", reload=True)
     print("running")
+
 
 if __name__ == '__main__':
     main()

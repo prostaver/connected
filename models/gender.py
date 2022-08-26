@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Integer
 
 from config.database import Base
 
+
 class Gender(Base):
     __tablename__ = "genders"
 

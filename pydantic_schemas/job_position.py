@@ -3,13 +3,16 @@ from decimal import Decimal
 from pydantic import BaseModel
 from pydantic_schemas.employer import Employer
 
+
 class BaseJobPosition(BaseModel):
     title: str
     description: str
     salary: Decimal
 
+
 class CreateJobPosition(BaseJobPosition):
     pass
+
 
 class JobPosition(BaseJobPosition):
     id: int

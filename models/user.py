@@ -5,6 +5,7 @@ from config.database import Base
 from models.user_type import UserType
 from models.gender import Gender
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -23,4 +24,5 @@ class User(Base):
     gender = relationship(Gender)
 
     def __repr__(self):
-        return f"<User id = {self.id}, first_name = {self.first_name}, middle_name = {self.middle_name}, last_name = {self.last_name}, last_name = {self.email}>"
+        return f"<User id = {self.id}, first_name = {self.first_name}, middle_name = {self.middle_name}, " \
+               f"last_name = {self.last_name}, last_name = {self.email}>"

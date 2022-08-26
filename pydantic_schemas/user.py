@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from pydantic_schemas.gender import Gender
 from pydantic_schemas.user_type import UserType
 
+
+#TODO Thinking of moving applicant and employer schemas to this file instead
 class BaseUser(BaseModel):
     first_name: str
     middle_name: str
@@ -13,6 +15,7 @@ class BaseUser(BaseModel):
     contact_no: str
     user_type_id: int
     gender_id: int
+
 
 class User(BaseUser):
     from models.user import User as ModelUser
@@ -36,6 +39,7 @@ class User(BaseUser):
 
     class Config:
         orm_mode = True
+
 
 class CreateUser(BaseUser):
     password: Optional[str]

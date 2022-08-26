@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 from models.employer import Employer
 
+
 class JobPosition(Base):
     __tablename__ = "job_positions"
 

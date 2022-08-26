@@ -1,10 +1,7 @@
-import time
-
 from fastapi import HTTPException, status
-from jose import jwt
 from sqlalchemy.orm import Session
 
-from .hash_func import hash_password, verify_password
+from .hash_func import hash_password
 from models import user as model_user
 from pydantic_schemas import user as user_schema, user_type as user_type_schema
 from services import employer_service, applicant_service
@@ -12,21 +9,23 @@ from services import employer_service, applicant_service
 """
     Retrieves the user data
 """
-def get_users(db: Session, user_id:int = None):
+
+
+def get_users(db: Session, user_id: int = None):
     if user_id:
-        user = db.query(model_user.User).filter(model_user.User.id==user_id).first()
+        user = db.query(model_user.User).filter(model_user.User.id == user_id).first()
         if user:
             return user
         else:
             raise HTTPException(status.HTTP_404_NOT_FOUND, f"No user with id {user_id} was found")
     return db.query(model_user.User).all()
 
-def create_or_update_user(db: Session, user_input:user_schema.CreateUser, user_id:int = None):
-    user_data = None
+
+def create_or_update_user(db: Session, user_input: user_schema.CreateUser, user_id: int = None):
     hashed_password = None
     unhashed_password = user_input.password
 
-    if unhashed_password != None or unhashed_password != '':
+    if unhashed_password is not None or unhashed_password != '':
         hashed_password = hash_password(unhashed_password)
 
     if user_id:
@@ -39,21 +38,20 @@ def create_or_update_user(db: Session, user_input:user_schema.CreateUser, user_i
         user_data.contact_no = user_input.contact_no
         user_data.user_type_id = user_input.user_type_id
         user_data.gender_id = user_input.gender_id
-        if hashed_password != None or hashed_password != '':
+        if hashed_password is not None or hashed_password != '':
             user_data.password = hashed_password
     else:
         user_data = model_user.User(
-            first_name = user_input.first_name,
-            middle_name = user_input.middle_name,
-            last_name = user_input.last_name,
-            address = user_input.address,
-            email = user_input.email,
-            contact_no = user_input.contact_no,
-            #password = input_data.password,
-            user_type_id = user_input.user_type_id,
-            gender_id = user_input.gender_id
+            first_name=user_input.first_name,
+            middle_name=user_input.middle_name,
+            last_name=user_input.last_name,
+            address=user_input.address,
+            email=user_input.email,
+            contact_no=user_input.contact_no,
+            user_type_id=user_input.user_type_id,
+            gender_id=user_input.gender_id
         )
-        if hashed_password != None or hashed_password != '':
+        if hashed_password is not None or hashed_password != '':
             user_data.password = hashed_password
 
     db.add(user_data)
@@ -67,11 +65,13 @@ def create_or_update_user(db: Session, user_input:user_schema.CreateUser, user_i
 
     return user_data
 
+
 def get_user_by_email(db: Session, email: str):
-    user = db.query(model_user.User).filter(model_user.User.email==email).first()
+    user = db.query(model_user.User).filter(model_user.User.email == email).first()
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Incorrect username or password", {"WWW-Authenticate": "Bearer"})
     return user
+
 
 def delete_user(db: Session, user_id: int):
     user = get_users(db, user_id)
@@ -87,4 +87,4 @@ def delete_user(db: Session, user_id: int):
     db.query(model_user.User).filter(model_user.User.id == user_id).delete()
     db.commit()
 
-    return {"messsage": f"Successfully deleted user with id: {user_id}"}
+    return {"message": f"Successfully deleted user with id: {user_id}"}

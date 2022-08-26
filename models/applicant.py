@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 from models.user import User
 
+
 class Applicant(Base):
     __tablename__ = "applicant_details"
 

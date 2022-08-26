@@ -8,12 +8,14 @@ from services import user_type_service
 
 router = APIRouter(
     prefix="/user_types",
-    tags={"user_types"}
+    tags=["user_types"]
 )
+
 
 @router.get("/", response_model=List[UserType], status_code=status.HTTP_200_OK)
 async def get_user_types(db: Session = Depends(get_db_connection)):
     return user_type_service.get_user_types(db)
+
 
 @router.get("/{user_type_id}", response_model=UserType, status_code=status.HTTP_200_OK)
 async def get_user_type(user_type_id: int, db: Session = Depends(get_db_connection)):

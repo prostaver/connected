@@ -5,6 +5,7 @@ from config.database import Base
 from models.applicant import Applicant
 from models.job_position import JobPosition
 
+
 class EmploymentLog(Base):
     __tablename__ = "employment_logs"
 
@@ -20,5 +21,6 @@ class EmploymentLog(Base):
     job_position = relationship(JobPosition)
 
     def __repr__(self):
-        return (f"<EmploymentLog id = {self.id}, company_name = {self.company_name}, position = {self.position}, tenure = {self.tenure}, " +
-                f"is_current = {self.is_current}, applicant_id = {self.applicant_id}, employer_id = {self.job_position_id}>")
+        return (f"<EmploymentLog id = {self.id}, company_name = {self.company_name}, position = {self.position}, "
+                f"tenure = {self.tenure}, is_current = {self.is_current}, applicant_id = {self.applicant_id}, "
+                f"employer_id = {self.job_position_id}>")
