@@ -22,7 +22,7 @@ def create_auth_token(db: Session, email: str, password: str):
     }
 
     token = jwt.encode(payload, SECRET_KEY, ALGORITHM)
-    return {"access_token": token}
+    return {"access_token": token, "token_type": "bearer"}
 
 
 def decode_token(token: str):

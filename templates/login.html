@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('static', path='/css/tailwind.css') }}" rel="stylesheet" />
+    <title>Connected</title>
+</head>
+<body>
+    <div class="flex justify-center">
+        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" id="formLogin" method="post">
+            <div class="text-4xl text-center">Login</div>
+            <div>
+                <label for="username" class="block">Username</label>
+                <input type="text" name="username" id="username" class="form-input rounded">
+            </div>
+            <div>
+                <label for="password" class="block">Password</label>
+                <input type="password" name="password" id="password" class="form-input rounded">
+            </div>
+            <div>
+                <button type="submit" class="border rounded text-xl bg-sky-500 p-2">Login</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        //do work
+    });
+
+    // const loginForm = document.getElementById("formLogin");
+
+    // loginForm.onsubmit = function() {
+    //     // fetch("localhost:8000/login")
+    //     alert("here");
+    // };
+</script>
+</html>

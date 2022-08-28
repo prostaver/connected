@@ -3,7 +3,8 @@ from pydantic_schemas import user as user_schema
 from sqlalchemy.orm import Session
 from typing import List
 
-from routes.endpoints.login import oauth2_scheme
+# from routes.endpoints.login import oauth2_scheme
+from routes.endpoints.login import oauth2_scheme_cookie
 from config.database import get_db_connection
 from services import user_service, login_service
 
@@ -38,7 +39,7 @@ async def update_user(user_id: int, user_input: user_schema.CreateUser, db: Sess
 
 
 @router.get("/current/", response_model=user_schema.User, status_code=status.HTTP_200_OK)
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db_connection)):
+async def get_current_user(token: str = Depends(oauth2_scheme_cookie), db: Session = Depends(get_db_connection)):
     payload = login_service.decode_token(token)
     user = user_service.get_user_by_email(db=db, email=payload.get("user_email"))
     return user

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('static', path='/css/tailwind.css') }}" rel="stylesheet" />
+    <title>Connected</title>
+
+    {% block title %}
+    {% endblock %}
+</head>
+
+<body class="h-full">
+    {% include "/theme/header.html" %}
+
+    <div class="h-full">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% include "/theme/footer.html" %}
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
