@@ -1,12 +1,18 @@
 {% extends "theme/base.html" %}
 
-
 {% block title %}
-    <title>Job Board</title>
+    <title>Dashboard</title>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <!-- <div class="container">
         <h1 class="display-4">Dashboard</h1>
+    </div> -->
+    <div class="table_label">
+        {{"Available Job Positions" if data.user_type_id == 1 else "My Applications"}}
+        <a href="{{ url_for('form_create_job_position') }}">[Add]</a>
+    </div>
+    <div class="table_container">
+        {% include "job_list.html" %}
     </div>
 {% endblock %}

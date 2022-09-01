@@ -88,3 +88,11 @@ def delete_user(db: Session, user_id: int):
     db.commit()
 
     return {"message": f"Successfully deleted user with id: {user_id}"}
+
+
+def get_detailed_user(db: Session, user: model_user.User):
+    if user_type_schema.UserTypes(user.user_type_id) == user_type_schema.UserTypes.Employer:
+        detailed_user = employer_service.get_employer_by_user_id(db, user.id)
+    else:
+        detailed_user = applicant_service.get_applicant_by_user_id(db, user.id)
+    return detailed_user

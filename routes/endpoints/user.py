@@ -1,7 +1,9 @@
-from fastapi import APIRouter, status, Depends
+from typing import List, Optional
+
+from fastapi import APIRouter, Request, status, Depends
+from fastapi.responses import RedirectResponse
 from pydantic_schemas import user as user_schema
 from sqlalchemy.orm import Session
-from typing import List
 
 # from routes.endpoints.login import oauth2_scheme
 from routes.endpoints.login import oauth2_scheme_cookie
@@ -39,10 +41,20 @@ async def update_user(user_id: int, user_input: user_schema.CreateUser, db: Sess
 
 
 @router.get("/current/", response_model=user_schema.User, status_code=status.HTTP_200_OK)
-async def get_current_user(token: str = Depends(oauth2_scheme_cookie), db: Session = Depends(get_db_connection)):
-    payload = login_service.decode_token(token)
-    user = user_service.get_user_by_email(db=db, email=payload.get("user_email"))
-    return user
+async def get_current_user(request: Request, token: Optional[str] = Depends(oauth2_scheme_cookie),
+                           db: Session = Depends(get_db_connection)):
+    # if isinstance(token, RedirectResponse):
+    #     return token
+
+    if token is not None:
+        payload = login_service.decode_token(token)
+
+        if payload is not None:
+            user = user_service.get_user_by_email(db=db, email=payload.get("user_email"))
+            # detailed_user = user_service.get_detailed_user(db, user)
+
+            return user
+    return RedirectResponse(request.url_for("login"), status.HTTP_303_SEE_OTHER)
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_200_OK)

@@ -32,7 +32,7 @@ def create_applicant(db: Session, user_id: int = None):
     return applicant_data
 
 
-def get_applicant_by_user_id(db: Session, user_id: int):
+def get_applicant_by_user_id(db: Session, user_id: int) -> model_applicant.Applicant:
     """Retrieves the applicant data based on the related user id."""
     return db.query(model_applicant.Applicant).filter(model_applicant.Applicant.user_id == user_id).first()
 

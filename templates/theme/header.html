@@ -11,7 +11,7 @@
                     <a href="#" class="p-3 hover:text-white">ApplicantProfile/CompanyProfile</a>
                 </li>
                 <li class="sm:inline-block">
-                    <a href="#" class="p-3 hover:text-white">Jobs/Applicants</a>
+                    <a href="#" class="p-3 hover:text-white">{{ "Find Applicants" if data.user_type_id == 1 else "Find Jobs" }}</a>
                 </li>
             </ul>
         </div>
