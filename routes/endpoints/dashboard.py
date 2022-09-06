@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 
 from config.database import get_db_connection
 from models import user as model_user
+
 from routes.endpoints.user import get_current_user
-from services import login_service, user_service
+from services import user_service
 from templates import templates
 
 

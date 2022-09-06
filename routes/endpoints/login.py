@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from config.database import get_db_connection
@@ -19,7 +18,7 @@ oauth2_scheme_cookie = OAuth2PasswordBearerWithCookie(tokenUrl="login/token")
 
 
 @router.post("/token")
-def login_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(),
+def login_token(response: Response, form_data: LoginForm = Depends(),
                 db: Session = Depends(get_db_connection)):
     return login_service.create_auth_token(db, form_data.username, form_data.password, response)
 

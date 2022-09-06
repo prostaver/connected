@@ -57,11 +57,11 @@ def create_or_update_user(db: Session, user_input: user_schema.CreateUser, user_
     db.add(user_data)
     db.commit()
 
-    employer_input_data = user_input.employer
-    if user_type_schema.UserTypes(user_data.user_type_id) == user_type_schema.UserTypes.Employer:
-        employer_service.create_or_update_employer(db=db, employer_input_data=employer_input_data, user_id=user_data.id)
-    elif user_type_schema.UserTypes(user_data.user_type_id) == user_type_schema.UserTypes.Applicant:
-        applicant_service.create_applicant(db, user_data.id)
+    # employer_input_data = user_input.employer
+    # if user_type_schema.UserTypes(user_data.user_type_id) == user_type_schema.UserTypes.Employer:
+    #     employer_service.create_or_update_employer(db=db, employer_input_data=employer_input_data, user_id=user_data.id)
+    # elif user_type_schema.UserTypes(user_data.user_type_id) == user_type_schema.UserTypes.Applicant:
+    #     applicant_service.create_applicant(db, user_data.id)
 
     return user_data
 

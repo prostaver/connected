@@ -1,14 +1,17 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Request, status, Depends
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic_schemas import user as user_schema
 from sqlalchemy.orm import Session
 
-# from routes.endpoints.login import oauth2_scheme
+from routes.endpoints.login import login_token
+from forms.login_form import LoginForm
+from forms.user_form import UserForm
 from routes.endpoints.login import oauth2_scheme_cookie
+from templates import templates
 from config.database import get_db_connection
-from services import user_service, login_service
+from services import gender_service, login_service, user_service, user_type_service
 
 router = APIRouter(
     prefix="/users",
@@ -60,3 +63,31 @@ async def get_current_user(request: Request, token: Optional[str] = Depends(oaut
 @router.delete("/{user_id}", status_code=status.HTTP_200_OK)
 async def delete_user(user_id: int, db: Session = Depends(get_db_connection)):
     return user_service.delete_user(db, user_id)
+
+
+@router.get("/signup/", response_class=HTMLResponse)
+async def get_create_user_form(request: Request, db: Session = Depends(get_db_connection)):
+    genders = gender_service.get_genders(db)
+    user_types = user_type_service.get_user_types(db)
+    data = {
+        "genders": genders,
+        "user_types": user_types
+    }
+
+    return templates.TemplateResponse("signup.html", {"request": request, "data": data})
+
+
+@router.post('/signup/', response_class=HTMLResponse, status_code=status.HTTP_201_CREATED)
+async def post_user_form(request: Request, db: Session = Depends(get_db_connection)):
+    user_form = UserForm(request)
+    await user_form.load_form_data()
+    user_data = user_form.form_to_schema()
+    saved_user = await create_user(user_data, db)
+
+    # response = RedirectResponse(request.url_for("get_employer_form"), status.HTTP_303_SEE_OTHER)
+    response = templates.TemplateResponse("employer_form.html", {"request": request, "user_id": saved_user.id})
+
+    login_form = object.__new__(LoginForm)
+    login_form.new(username=user_form.email, password=user_form.password)
+    login_token(response, login_form, db)
+    return response

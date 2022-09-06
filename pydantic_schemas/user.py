@@ -5,7 +5,6 @@ from pydantic_schemas.gender import Gender
 from pydantic_schemas.user_type import UserType
 
 
-#TODO Thinking of moving applicant and employer schemas to this file instead
 class BaseUser(BaseModel):
     first_name: str
     middle_name: str
@@ -43,9 +42,3 @@ class User(BaseUser):
 
 class CreateUser(BaseUser):
     password: Optional[str]
-
-    from pydantic_schemas.employer import CreateEmployer
-    # from pydantic_schemas.applicant import CreateApplicant
-
-    employer: Optional[CreateEmployer]
-    # applicant: Optional[CreateApplicant]

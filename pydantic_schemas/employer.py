@@ -7,6 +7,7 @@ class BaseEmployer(BaseModel):
     company_description: str
     company_website: Optional[str]
     company_logo: Optional[str]
+    user_id: int
 
 
 class CreateEmployer(BaseEmployer):
@@ -15,7 +16,6 @@ class CreateEmployer(BaseEmployer):
 
 class Employer(BaseEmployer):
     id: int
-    user_id: int
 
     from pydantic_schemas.user import User
     user: User

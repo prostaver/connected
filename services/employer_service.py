@@ -18,10 +18,10 @@ def get_employers(db: Session, employer_id: int = None):
     return employers
 
 
-def create_or_update_employer(db: Session, employer_input_data: employer_schema.CreateEmployer,
-                              user_id: int = None) -> model_employer.Employer:
+def create_or_update_employer(db: Session, employer_input_data: employer_schema.CreateEmployer
+                              ) -> model_employer.Employer:
     """Creates or updates the employer details for the user."""
-    employer_data = get_employer_by_user_id(db, user_id, True)
+    employer_data = get_employer_by_user_id(db, employer_input_data.user_id, True)
 
     if employer_data:
         employer_data.company_name = employer_input_data.company_name,
@@ -34,7 +34,7 @@ def create_or_update_employer(db: Session, employer_input_data: employer_schema.
             company_description=employer_input_data.company_description,
             company_website=employer_input_data.company_website,
             company_logo=employer_input_data.company_logo,
-            user_id=user_id
+            user_id=employer_input_data.user_id
         )
 
     db.add(employer_data)

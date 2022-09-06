@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="{{ url_for('static', path='/css/tailwind.css') }}" rel="stylesheet" />
+        <title>Sign Up</title>
+    </head>
+    <body>
+        <div class="flex justify-center">
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" id="form_user" method="post" action="/employers/form/create">
+                <div class="text-4xl text-center">Company Details</div>
+                <div id="errors" class="error_messages text-red-600">{{ errors }}</div>
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <div>
+                    <label for="company_name" class="block">Name</label>
+                    <input type="text" name="company_name" id="company_name" value="{{ company_name }}"
+                            class="form-input rounded" placeholder="Name">
+                </div>
+                <div>
+                    <label for="company_description" class="block">Description</label>
+                    <input type="text" name="company_description" id="company_description" value="{{ company_description }}"
+                            class="form-input rounded" placeholder="Description">
+                </div>
+                <div>
+                    <label for="company_website" class="block">Company Website</label>
+                    <input type="text" name="company_website" id="company_website" value="{{ company_website }}"
+                            class="form-input rounded" placeholder="Website">
+                </div>
+                <div>
+                    <label for="company_logo" class="block">Logo</label>
+                    <input type="text" name="company_logo" id="company_logo" value="{{ company_logo }}"
+                            class="form-input rounded" placeholder="Logo">
+                </div>
+                <div>
+                    <button type="submit" class="border rounded text-xl bg-sky-500 p-2">Create</button>
+                </div>
+            </form>
+        </div>
+    </body>
+
+    <!-- <script>
+        function confirm_pw() {
+            const password = document.getElementById("password").value;
+            const confirm_password = document.getElementById("confirm_password").value;
+            const error_div = document.getElementById("errors")
+            
+            if(password !== confirm_password) {
+                error_div.innerText = "Passwords does not match";
+            } else {
+                error_div.innerText = "";
+            }
+        }
+    </script> -->
+</html>
