@@ -1,5 +1,16 @@
 <table class="table">
     <thead>
-        <th>Table Header Column</th>
+        <th></th>
+        <th>Job Title</th>
+        <th>Description</th>
     </thead>
+    <tbody>
+        {% for job in job_list %}
+            <tr>
+                <td>{{ loop.index }}.</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.description }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>

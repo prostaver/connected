@@ -8,10 +8,13 @@
             <!-- Menus  -->
             <ul class="text-gray-400 sm:self-center text-xl border-t sm:border-none">
                 <li class="sm:inline-block">
-                    <a href="#" class="p-3 hover:text-white">ApplicantProfile/CompanyProfile</a>
+                    <a href="/dashboard/" class="p-3 hover:text-white">{{ detailed_user.company_name if user_type_id == 1 else detailed_user.user.first_name + ' ' + detailed_user.user.last_name }}</a>
                 </li>
                 <li class="sm:inline-block">
-                    <a href="#" class="p-3 hover:text-white">{{ "Find Applicants" if data.user_type_id == 1 else "Find Jobs" }}</a>
+                    <a href="{{ "#" if user_type_id == 1 else url_for('find_job_page') }}" class="p-3 hover:text-white">{{ "Find Applicants" if user_type_id == 1 else "Find Jobs" }}</a>
+                </li>
+                <li class="sm:inline-block">
+                    <a href="{{ url_for('logout') }}" class="p-3 hover:text-white">Logout</a>
                 </li>
             </ul>
         </div>

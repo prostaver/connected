@@ -47,10 +47,10 @@ async def get_employer_form(request: Request,
         return user_or_response
 
     data = {
-        "user_id": user_or_response.id
+        "request": request, "user_id": user_or_response.id
     }
 
-    return templates.TemplateResponse("employer_form.html", {"request": request, "data": data})
+    return templates.TemplateResponse("employer_form.html", data)
 
 
 @router.post("/form/create")

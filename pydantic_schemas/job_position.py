@@ -8,6 +8,7 @@ class BaseJobPosition(BaseModel):
     title: str
     description: str
     salary: Decimal
+    employer_id: int
 
 
 class CreateJobPosition(BaseJobPosition):
@@ -16,7 +17,6 @@ class CreateJobPosition(BaseJobPosition):
 
 class JobPosition(BaseJobPosition):
     id: int
-    employer_id: int
 
     employer: Employer
 

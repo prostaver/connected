@@ -2,16 +2,17 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from models import job_position as model_job_position
+from models import job_application as model_job_application
 from pydantic_schemas import job_position as job_position_schema
 
 
-def create_job_position(db: Session, job_position_input: job_position_schema.CreateJobPosition, employer_id: int):
+def create_job_position(db: Session, job_position_input: job_position_schema.CreateJobPosition):
     """Creates a job position open for an employer/company."""
     jp_data = model_job_position.JobPosition(
         title=job_position_input.title,
         description=job_position_input.description,
         salary=job_position_input.salary,
-        employer_id=employer_id
+        employer_id=job_position_input.employer_id
     )
 
     db.add(jp_data)
@@ -52,3 +53,9 @@ def delete_job_position(db: Session, job_position_id: int, employer_id: int):
     db.commit()
 
     return {"message": f"Successfully deleted job position with id: {job_position_id}"}
+
+
+def get_applied_job_positions_by_applicant(db: Session, applicant_id: int):
+    ja_list = db.query(model_job_application.JobApplication).filter(model_job_application.JobApplication.applicant_id == applicant_id).all()
+    return db.query(model_job_position.JobPosition).filter(model_job_position.JobPosition.id.in_(jp.id for jp in ja_list)).all()
+    # print(jp_list)

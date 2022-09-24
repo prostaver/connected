@@ -1,0 +1,27 @@
+{% extends "theme/base.html" %}
+
+{% block title %}
+    <title>Jobs</title>
+{% endblock %}
+
+{% block content %}
+    {% for job in jobs %}
+        <div class="container-card" onclick="card_on_click({{ job.id }})">
+            <div class="jobs-title">
+                {{ job.title }}
+            </div>
+            <div class="job-descripption">
+                {{ job.description }}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function card_on_click(job_id) {
+            window.location.href = "/job_positions/" + job_id + "/details";
+            //window.location.replace("/job_positions/" + job_id + "/details");
+        }
+    </script>
+{% endblock %}

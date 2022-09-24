@@ -5,13 +5,13 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic_schemas import user as user_schema
 from sqlalchemy.orm import Session
 
-from routes.endpoints.login import login_token
+from config.database import get_db_connection
 from forms.login_form import LoginForm
 from forms.user_form import UserForm
-from routes.endpoints.login import oauth2_scheme_cookie
+from pydantic_schemas.user_type import UserTypes
+from routes.endpoints.login import login_token, oauth2_scheme_cookie
+from services import applicant_service, gender_service, login_service, user_service, user_type_service
 from templates import templates
-from config.database import get_db_connection
-from services import gender_service, login_service, user_service, user_type_service
 
 router = APIRouter(
     prefix="/users",
@@ -70,11 +70,12 @@ async def get_create_user_form(request: Request, db: Session = Depends(get_db_co
     genders = gender_service.get_genders(db)
     user_types = user_type_service.get_user_types(db)
     data = {
+        "request": request,
         "genders": genders,
         "user_types": user_types
     }
 
-    return templates.TemplateResponse("signup.html", {"request": request, "data": data})
+    return templates.TemplateResponse("signup.html", data)
 
 
 @router.post('/signup/', response_class=HTMLResponse, status_code=status.HTTP_201_CREATED)
@@ -85,7 +86,11 @@ async def post_user_form(request: Request, db: Session = Depends(get_db_connecti
     saved_user = await create_user(user_data, db)
 
     # response = RedirectResponse(request.url_for("get_employer_form"), status.HTTP_303_SEE_OTHER)
-    response = templates.TemplateResponse("employer_form.html", {"request": request, "user_id": saved_user.id})
+    if UserTypes(user_data.user_type_id) == UserTypes.Employer:
+        response = templates.TemplateResponse("employer_form.html", {"request": request, "user_id": saved_user.id})
+    else:
+        applicant_service.create_applicant(db, saved_user.id)
+        response = RedirectResponse(request.url_for("dashboard"), status.HTTP_303_SEE_OTHER)
 
     login_form = object.__new__(LoginForm)
     login_form.new(username=user_form.email, password=user_form.password)

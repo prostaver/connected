@@ -9,10 +9,16 @@
     {% endblock %}
 </head>
 
-<body class="h-full">
+<body>
     {% include "/theme/header.html" %}
 
-    <div class="h-full">
+    <div>
+        <input type="hidden" name="user_id" id="user_id" value="{{ detailed_user.user.id }}">
+        {% if user_type_id == 1 %}
+            <input type="hidden" name="employer_id" id="employer_id" value="{{ detailed_user.id }}">
+        {% else %}
+            <input type="hidden" name="applicant_id" id="applicant_id" value="{{ detailed_user.id }}">
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>

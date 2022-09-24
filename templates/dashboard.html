@@ -9,8 +9,13 @@
         <h1 class="display-4">Dashboard</h1>
     </div> -->
     <div class="table_label">
-        {{"Available Job Positions" if data.user_type_id == 1 else "My Applications"}}
-        <a href="{{ url_for('form_create_job_position') }}">[Add]</a>
+        {% if user_type_id == 1 %}
+            Available Job Positions
+            <a href="{{ url_for('form_create_job_position') }}">{{"[Add]" if user_type_id == 1 else "[Find]"}}</a>
+        {% else %}
+            My Applications
+            <a href="{{ url_for('find_job_page') }}">{{"[Add]" if user_type_id == 1 else "[Find]"}}</a>
+        {% endif %}
     </div>
     <div class="table_container">
         {% include "job_list.html" %}

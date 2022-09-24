@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from routes.endpoints import (applicant, dashboard, employer, employment_log, gender, job_position, login,
-                              qualification, user, user_type)
+from routes.endpoints import (applicant, dashboard, employer, employment_log, gender, job_application, job_position,
+                              login, qualification, user, user_type)
 
 router = APIRouter()
 
@@ -15,3 +15,4 @@ router.include_router(job_position.router)
 router.include_router(applicant.router)
 router.include_router(qualification.router)
 router.include_router(employment_log.router)
+router.include_router(job_application.router)

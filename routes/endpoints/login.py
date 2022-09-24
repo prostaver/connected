@@ -8,22 +8,19 @@ from handlers.auth_bearer_with_cookie_handler import OAuth2PasswordBearerWithCoo
 from services import login_service
 from templates import templates
 
-router = APIRouter(
-    prefix="/login",
-    tags=["login"]
-)
+router = APIRouter()
 
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 oauth2_scheme_cookie = OAuth2PasswordBearerWithCookie(tokenUrl="login/token")
 
 
-@router.post("/token")
+@router.post("/login/token", tags=["login"])
 def login_token(response: Response, form_data: LoginForm = Depends(),
                 db: Session = Depends(get_db_connection)):
     return login_service.create_auth_token(db, form_data.username, form_data.password, response)
 
 
-@router.post("/", response_class=HTMLResponse)
+@router.post("/login/", tags=["login"], response_class=HTMLResponse)
 async def login(request: Request, db: Session = Depends(get_db_connection)):
     form = LoginForm(request)
     try:
@@ -36,6 +33,13 @@ async def login(request: Request, db: Session = Depends(get_db_connection)):
         return templates.TemplateResponse("login.html", form.__dict__)
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("/login/", tags=["login"], response_class=HTMLResponse)
 async def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
+
+
+@router.get("/logout/", tags=["logout"], response_class=HTMLResponse)
+async def logout(request: Request):
+    response = RedirectResponse(request.url_for("login"), status.HTTP_303_SEE_OTHER)
+    response.delete_cookie(key="access_token")
+    return response
