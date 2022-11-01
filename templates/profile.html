@@ -1,0 +1,15 @@
+{% extends "theme/base.html" %}
+
+{% block title %}
+    <title>Profile</title>
+{% endblock %}
+
+{% block content %}
+    <div><img src="{{url_for('static', path='/images/user_profile/')}}{{detailed_user.user.user_img}}" alt="" style="height: 150px; width: 150px;"></div>
+    <div>{{base_url}}</div>
+    <div>{{ detailed_user }}</div>
+    <div>{{ detailed_user.user }}</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock scripts %}
