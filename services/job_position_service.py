@@ -56,6 +56,7 @@ def delete_job_position(db: Session, job_position_id: int, employer_id: int):
 
 
 def get_applied_job_positions_by_applicant(db: Session, applicant_id: int):
-    ja_list = db.query(model_job_application.JobApplication).filter(model_job_application.JobApplication.applicant_id == applicant_id).all()
-    return db.query(model_job_position.JobPosition).filter(model_job_position.JobPosition.id.in_(jp.id for jp in ja_list)).all()
-    # print(jp_list)
+    ja_list = db.query(model_job_application.JobApplication).filter(
+        model_job_application.JobApplication.applicant_id == applicant_id).all()
+    return db.query(model_job_position.JobPosition).filter(
+        model_job_position.JobPosition.id.in_(jp.id for jp in ja_list)).all()
