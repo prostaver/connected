@@ -11,13 +11,11 @@ from services import job_position_service, user_service
 from templates import templates
 
 
-router = APIRouter(
-    prefix="/dashboard",
-    tags=["dashboard"]
-)
+router = APIRouter()
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("/", tags=["dashboard"], response_class=HTMLResponse)
+@router.get("/dashboard/", tags=["dashboard"], response_class=HTMLResponse)
 async def dashboard(request: Request, user_or_response: model_user.User | RedirectResponse = Depends(get_current_user),
                     db: Session = Depends(get_db_connection)):
     if isinstance(user_or_response, RedirectResponse):
