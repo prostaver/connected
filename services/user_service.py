@@ -25,7 +25,7 @@ def create_or_update_user(db: Session, user_input: user_schema.CreateUser, user_
     hashed_password = None
     unhashed_password = user_input.password
 
-    if unhashed_password is not None or unhashed_password != '':
+    if unhashed_password:
         hashed_password = hash_password(unhashed_password)
 
     if user_id:
@@ -38,8 +38,10 @@ def create_or_update_user(db: Session, user_input: user_schema.CreateUser, user_
         user_data.contact_no = user_input.contact_no
         user_data.user_type_id = user_input.user_type_id
         user_data.gender_id = user_input.gender_id
-        if hashed_password is not None or hashed_password != '':
+        if hashed_password:
             user_data.password = hashed_password
+        if user_input.user_upload_img.filename:
+            user_data.user_img = user_input.user_upload_img.filename
     else:
         user_data = model_user.User(
             first_name=user_input.first_name,
@@ -51,8 +53,10 @@ def create_or_update_user(db: Session, user_input: user_schema.CreateUser, user_
             user_type_id=user_input.user_type_id,
             gender_id=user_input.gender_id
         )
-        if hashed_password is not None or hashed_password != '':
+        if hashed_password:
             user_data.password = hashed_password
+        if user_input.user_upload_img.filename:
+            user_data.user_img = user_input.user_upload_img.filename
 
     db.add(user_data)
     db.commit()

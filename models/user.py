@@ -19,6 +19,7 @@ class User(Base):
     password = Column(Text, nullable=False)
     user_type_id = Column(Integer, ForeignKey("user_types.id"))
     gender_id = Column(Integer, ForeignKey("genders.id"))
+    user_img = Column(String(255), nullable=True)
 
     user_type = relationship(UserType)
     gender = relationship(Gender)

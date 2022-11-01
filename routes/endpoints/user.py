@@ -8,9 +8,11 @@ from sqlalchemy.orm import Session
 from config.database import get_db_connection
 from forms.login_form import LoginForm
 from forms.user_form import UserForm
+from models import user as model_user
 from pydantic_schemas.user_type import UserTypes
 from routes.endpoints.login import login_token, oauth2_scheme_cookie
 from services import applicant_service, gender_service, login_service, user_service, user_type_service
+from services.file_service import save_file
 from templates import templates
 
 router = APIRouter(
@@ -34,6 +36,7 @@ async def get_user(user_id: int, db: Session = Depends(get_db_connection)):
 @router.post('/', response_model=user_schema.User, status_code=status.HTTP_201_CREATED)
 async def create_user(user_input: user_schema.CreateUser, db: Session = Depends(get_db_connection)):
     new_user = user_service.create_or_update_user(db=db, user_input=user_input)
+    await save_file(user_input.user_upload_img)
     return new_user
 
 
@@ -85,7 +88,6 @@ async def post_user_form(request: Request, db: Session = Depends(get_db_connecti
     user_data = user_form.form_to_schema()
     saved_user = await create_user(user_data, db)
 
-    # response = RedirectResponse(request.url_for("get_employer_form"), status.HTTP_303_SEE_OTHER)
     if UserTypes(user_data.user_type_id) == UserTypes.Employer:
         response = templates.TemplateResponse("employer_form.html", {"request": request, "user_id": saved_user.id})
     else:
@@ -96,3 +98,20 @@ async def post_user_form(request: Request, db: Session = Depends(get_db_connecti
     login_form.new(username=user_form.email, password=user_form.password)
     login_token(response, login_form, db)
     return response
+
+
+@router.get("/profile/", response_class=HTMLResponse)
+async def profile(request: Request,
+                  user_or_response: RedirectResponse | model_user.User = Depends(get_current_user),
+                  db: Session = Depends(get_db_connection)):
+    if isinstance(user_or_response, RedirectResponse):
+        return user_or_response
+
+    detailed_user = user_service.get_detailed_user(db, user_or_response)
+    data = {
+        "request": request,
+        "detailed_user": detailed_user,
+        "user_type_id": user_or_response.user_type_id
+    }
+
+    return templates.TemplateResponse("profile.html", data)

@@ -1,5 +1,6 @@
 from typing import Optional
 
+from fastapi import UploadFile
 from pydantic import BaseModel
 from pydantic_schemas.gender import Gender
 from pydantic_schemas.user_type import UserType
@@ -19,6 +20,7 @@ class BaseUser(BaseModel):
 class User(BaseUser):
     from models.user import User as ModelUser
     id: int
+    user_img: Optional[str]
 
     user_type: UserType
     gender: Gender
@@ -35,6 +37,7 @@ class User(BaseUser):
         self.gender_id = user.gender_id
         self.user_type = user.user_type
         self.gender = user.gender
+        self.user_img = user.user_img
 
     class Config:
         orm_mode = True
@@ -42,3 +45,4 @@ class User(BaseUser):
 
 class CreateUser(BaseUser):
     password: Optional[str]
+    user_upload_img: Optional[UploadFile]

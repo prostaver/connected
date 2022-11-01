@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import Request
+from fastapi import Request, UploadFile
 
 from pydantic_schemas.user import CreateUser
 
@@ -18,6 +18,7 @@ class UserForm:
         self.password: Optional[str] = None
         self.user_type_id: Optional[int] = None
         self.gender_id: Optional[int] = None
+        self.user_img: Optional[UploadFile] = None
 
     async def load_form_data(self):
         form_data = await self.request.form()
@@ -31,6 +32,7 @@ class UserForm:
         self.user_type_id = form_data.get("user_type_id")
         self.gender_id = form_data.get("gender_id")
         self.password = form_data.get("password")
+        self.user_img = form_data.get("user_img")
 
     def form_to_schema(self) -> CreateUser:
         user_data = CreateUser(
@@ -42,7 +44,8 @@ class UserForm:
             contact_no=self.contact_no,
             user_type_id=self.user_type_id,
             gender_id=self.gender_id,
-            password=self.password
+            password=self.password,
+            user_upload_img=self.user_img
         )
 
         return user_data

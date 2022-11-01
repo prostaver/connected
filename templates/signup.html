@@ -7,9 +7,12 @@
     </head>
     <body>
         <div class="flex justify-center">
-            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" id="form_user" method="post">
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" id="form_user" method="post" enctype="multipart/form-data">
                 <div class="text-4xl text-center">Sign Up</div>
                 <div id="errors" class="error_messages text-red-600">{{ errors }}</div>
+                <div>
+                    <input type="file" name="user_img" id="usr_img" accept="image/*">
+                </div>
                 <div>
                     <label for="first_name" class="block">First Name</label>
                     <input type="text" name="first_name" id="first_name" value="{{ first_name }}"
